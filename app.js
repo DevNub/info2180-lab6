@@ -1,6 +1,5 @@
 window.onload = function(){
 
-//var $;
 var sb = document.getElementById("search");
 var httpRequest = new XMLHttpRequest();
 var term = "";
@@ -9,7 +8,29 @@ var url = "";
 var results = document.getElementById("result");
 var response = "";
 
+var ga = document.getElementById("getAll");
+
+    ga.onclick = function(){
+        url = "https://info2180-lab6-devnub.c9users.io/request.php?q=&all=true"
+        httpRequest.onreadystatechange = gaClick;
+        httpRequest.open('GET', url);
+        httpRequest.send();
+        return false;
+    }
     
+    function gaClick(){
+        if(httpRequest.readyState === XMLHttpRequest.DONE){
+            if(httpRequest.status === 200){
+                var response = httpRequest.responseText;
+                var resp = response;
+                results.innerHTML = response;
+            }
+            else{
+                alert('Problem with your request');
+            }
+        }
+    }
+  
     sb.onclick = function(){
         url = "https://info2180-lab6-devnub.c9users.io/request.php"
         
@@ -39,4 +60,6 @@ var response = "";
             }
         }
     }
+    
+    
 }
