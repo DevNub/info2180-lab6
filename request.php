@@ -3,10 +3,8 @@
 // accept a term (keyword)
 // respond with a value
 
-$query = $_GET['q'];
-$getAll = [
-    "&all=True" => getAll(),
-];
+$query = htmlspecialchars($_GET['q']);
+$all = htmlspecialchars($_GET['all']);
 
 $definition = [
     "definition" => "A statement of the exact meaning of a word, especially in a dictionary.",
@@ -18,28 +16,40 @@ $definition = [
     "php" => "A server-side scripting language, and a powerful tool for making dynamic and interactive websites",
 ];
 
-print "<h3>" . "Result" . "</h3>";
-print "<h3>" . strtoupper($query) . "</h3>";
-print "<p>" . $definition[$query] . "</p>";
+$authors = ["John", "Mary", "Kimberly", "Daniel", "Yannick", "Batman"];
+//$author = $authors[array_rand($authors)];
 
 
+if($all!=true){
+    print "<h3>" . "Result" . "</h3>";
+    print "<h3>" . strtoupper($query) . "</h3>";
+    print "<p>" . $definition[$query] . "</p>";
+}
+else{
 
-function getXML($array, $wrap1='<ENTRIES>', $wrap2='</ENTRIES>'){
-    $result = "<?xml version='1.0' encoding='UTF-8'?>";
-    $result .= $wrap."\n";
-    if(is_array($arr)){
-        foreach($array as $key=>$value){
-            $key = strtoupper($key);
-            $result .= '<DEFINITION NAME= "' . $key . '" AUTHOR="UNDEFINED">\n';
-            $result .= $value .'</definition>';
-        }
-        $result .= $wrap2."\n";
-    }
-    echo "allaa"."\n";
+    $xmldata = '<?xml version="1.0" encoding="UTF-8"?>';
     
-    return $result;
+    foreach ($definition as $key => $val) {
+        $pick = rand(0, count($authors) - 1);
+        $keyUP = strtoupper($key);
+        //$author = $authors[array_rand($authors)];
+       $xmldata .="
+       <entries><li><definition>
+            <name><h3>$keyUP</h3></name>
+            <meaning><p>$val</p></meaning>
+            <author><p>—$authors[$pick]</p></author>
+        </definition></li></entries>";
+    }
+
+print "<ol>";
+//echo "<pre>";
+header('Content-Type: text/xml');
+//$xmlOutput = new SimpleXMLElement($xmldata);
+//echo $xmlOutput->asXML();
+echo $xmldata;
+//echo "</pre>";
+print "</ol>";
+
 }
 
-function getAll(){
-    print getXML($definition);
-}
+

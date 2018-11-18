@@ -22,7 +22,6 @@ var ga = document.getElementById("getAll");
         if(httpRequest.readyState === XMLHttpRequest.DONE){
             if(httpRequest.status === 200){
                 var response = httpRequest.responseText;
-                var resp = response;
                 results.innerHTML = response;
             }
             else{
